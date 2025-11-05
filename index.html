@@ -364,10 +364,23 @@
     <script type="module">
   import "./socket.js";
   import "./multiplayerUI.js";
+        <script type="module">
+  import "./socket.js";
+  import "./multiplayerUI.js";
+  import { sendPlayerUpdate, sendEnemyState } from "./multiplayerSync.js";
+
+  // Sync loop — runs every 100ms
+  setInterval(() => {
+    if (window.player) sendPlayerUpdate(window.player);
+    if (window.enemies) sendEnemyState(window.enemies);
+  }, 100);
+</script>
+
 </script>
 
 </body>
 
 
 </html>
+
 
