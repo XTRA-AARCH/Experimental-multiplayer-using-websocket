@@ -18,6 +18,13 @@
 </head>
 
 <body>
+    <div id="multiplayer-ui" style="position: absolute; top: 0; left: 0; width: 100%; background: #222; color: white; padding: 10px; font-family: monospace; z-index: 999;">
+  <span>Your ID: <span id="your-id">...</span></span>
+  <input id="friend-id" placeholder="Friend's ID" style="margin-left: 10px;" />
+  <button id="connect-btn">Connect</button>
+  <span id="status" style="margin-left: 10px;">Status: Disconnected</span>
+</div>
+
     <div id='guns'></div>
     <div id='field'></div>
     <div id='right-HUD-constraint'></div>
@@ -355,5 +362,6 @@
     <script src="js/engine.js"></script>
     <script src="js/index.js"></script>
 </body>
+
 
 </html>
