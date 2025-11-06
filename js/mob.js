@@ -1,17 +1,31 @@
+// === Multiplayer imports ===
+import { sendEnemyState, sendEnemyHit } from "./multiplayerSync.js";
+
 //create array of mobs
 let mob = [];
 //method to populate the array above
 const mobs = {
-    loop() {
-        let i = mob.length;
-        while (i--) {
-            if (mob[i].alive) {
-                mob[i].do();
-            } else {
-                mob[i].replace(i); //removing mob and replace with body, this is done here to avoid an array index bug with drawing I think
-            }
+loop() {
+    let i = mob.length;
+    while (i--) {
+        if (mob[i].alive) {
+            mob[i].do();
+        } else {
+            mob[i].replace(i); //removing mob and replace with body, this is done here to avoid an array index bug with drawing I think
         }
-    },
+    }
+
+    // === Multiplayer: broadcast enemy positions ===
+    sendEnemyState(mob.map(m => ({
+        id: m.index,
+        x: m.position.x,
+        y: m.position.y,
+        vx: m.velocity.x,
+        vy: m.velocity.y
+    })));
+},
+
+
     draw() { },
     drawDefault() {
         ctx.lineWidth = 2;
@@ -1461,4 +1475,5 @@ const mobs = {
         mob[i].alertRange2 = Math.pow(mob[i].radius * 3 + 550, 2);
         Composite.add(engine.world, mob[i]); //add to world
     }
+
 };
