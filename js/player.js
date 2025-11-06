@@ -1,3 +1,5 @@
+import { sendPlayerUpdate } from "./multiplayerSync.js";
+
 //global player variables for use in matter.js physics
 let player, jumpSensor, playerBody, playerHead, headSensor;
 
@@ -7074,3 +7076,4 @@ m.move = () => {
     },
 
 };
+
