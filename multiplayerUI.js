@@ -1,5 +1,4 @@
 // multiplayerUI.js
-import { IDKWHATIAMDOINGHERE } from "./socket.js";
 
 const yourIdEl = document.getElementById("your-id");
 const friendIdInput = document.getElementById("friend-id");
