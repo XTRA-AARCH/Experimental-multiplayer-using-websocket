@@ -2,20 +2,24 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Browser-based side scrolling video game with the matter.js physics engine.">
-    <meta name="author" content="Ross Landgreen">
-    <meta property="og:description" content="Browser-based side scrolling video game with the matter.js physics engine.">
-    <meta property="og:title" content="n-gon">
-    <meta name="twitter:title" content="n-gon">
-    <meta name="twitter:description" content="Browser-based side scrolling video game with the matter.js physics engine.">
-    <!-- <meta http-equiv="refresh" content="0; url=https://landgreen.github.io/n-gon/"> -->
-    <title>n-gon</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browser-based side scrolling video game with the matter.js physics engine.">
+  <meta name="author" content="Ross Landgreen">
+  <meta property="og:description" content="Browser-based side scrolling video game with the matter.js physics engine.">
+  <meta property="og:title" content="n-gon">
+  <meta name="twitter:title" content="n-gon">
+  <meta name="twitter:description" content="Browser-based side scrolling video game with the matter.js physics engine.">
+  <!-- <meta http-equiv="refresh" content="0; url=https://landgreen.github.io/n-gon/"> -->
+  <title>n-gon</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+  <!-- Load simulation.js with defer so it runs after DOM is ready -->
+  <script src="js/simulation.js" defer></script>
 </head>
+
 
 <body>
     <div id="multiplayer-ui" style="position: absolute; top: 0; left: 0; width: 100%; background: #222; color: white; padding: 10px; font-family: monospace; z-index: 999;">
@@ -376,4 +380,5 @@
 </body>
 
 </html>
+
 
