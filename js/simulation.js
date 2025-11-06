@@ -2600,3 +2600,6 @@ const simulation = {
     // },
 
 };
+
+// expose globally so inline HTML can call it
+window.simulation = simulation;
