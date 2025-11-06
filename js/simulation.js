@@ -1,3 +1,6 @@
+// === Multiplayer imports ===
+import { sendBossTrigger } from "./multiplayerSync.js";
+
 // game Object ********************************************************
 //*********************************************************************
 const simulation = {
@@ -2595,4 +2598,5 @@ const simulation = {
     //         document.body.removeChild(textAreaEle);
     //     }
     // },
+
 };
