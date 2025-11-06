@@ -6,23 +6,27 @@ const friendIdInput = document.getElementById("friend-id");
 const connectBtn = document.getElementById("connect-btn");
 const statusEl = document.getElementById("status");
 
-IDKWHATIAMDOINGHERE.on("connect", () => {
-  yourIdEl.textContent = IDKWHATIAMDOINGHERE.id;
+// Show your own ID when connected
+IDKWHATIAMDOINGHERE.on("yourId", id => {
+  yourIdEl.textContent = id;
   statusEl.textContent = "Status: Connected";
 });
 
+// Handle disconnect
 IDKWHATIAMDOINGHERE.on("disconnect", () => {
   statusEl.textContent = "Status: Disconnected";
 });
 
+// Connect to a friend
 connectBtn.onclick = () => {
   const targetId = friendIdInput.value.trim();
   if (targetId) {
     statusEl.textContent = "Status: Connecting...";
-    IDKWHATIAMDOINGHERE.emit("connectToFriend", { targetId });
+    IDKWHATIAMDOINGHERE.emit("connectToFriend", targetId);
   }
 };
 
-IDKWHATIAMDOINGHERE.on("friendConnected", () => {
-  statusEl.textContent = "Status: Connected to Friend";
+// Update when friend connects
+IDKWHATIAMDOINGHERE.on("friendConnected", friendId => {
+  statusEl.textContent = "Status: Connected to Friend " + friendId;
 });
