@@ -6837,29 +6837,40 @@ const m = {
             //         level.nextLevel()
             //     }
             // }
-            m.move = () => {
-                m.pos.x = player.position.x;
-                m.pos.y = player.position.y;
-                m.Vx = player.velocity.x;
-                m.Vy = player.velocity.y;
+import { sendPlayerUpdate } from "./multiplayerSync.js";
 
-                //tracks the last 10s of player information
-                m.history.splice(m.cycle % 600, 1, {
-                    position: {
-                        x: player.position.x,
-                        y: player.position.y,
-                    },
-                    velocity: {
-                        x: player.velocity.x,
-                        y: player.velocity.y
-                    },
-                    yOff: m.yOff,
-                    angle: m.angle,
-                    health: m.health,
-                    energy: m.energy,
-                    activeGun: b.activeGun
-                });
-            }
+m.move = () => {
+    m.pos.x = player.position.x;
+    m.pos.y = player.position.y;
+    m.Vx = player.velocity.x;
+    m.Vy = player.velocity.y;
+
+    // tracks the last 10s of player information
+    m.history.splice(m.cycle % 600, 1, {
+        position: {
+            x: player.position.x,
+            y: player.position.y,
+        },
+        velocity: {
+            x: player.velocity.x,
+            y: player.velocity.y
+        },
+        yOff: m.yOff,
+        angle: m.angle,
+        health: m.health,
+        energy: m.energy,
+        activeGun: b.activeGun
+    });
+
+    // === Multiplayer: emit local player state ===
+    sendPlayerUpdate({
+        x: player.position.x,
+        y: player.position.y,
+        vx: player.velocity.x,
+        vy: player.velocity.y
+    });
+};
+
 
             m.look = () => { //disable mouse aiming
                 const scale = 0.8;
@@ -7061,4 +7072,5 @@ const m = {
             }
         }
     },
+
 };
