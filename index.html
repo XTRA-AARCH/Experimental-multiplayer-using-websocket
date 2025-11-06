@@ -18,11 +18,14 @@
 
   <!-- Load simulation.js with defer so it runs after DOM is ready -->
 <script src="lib/matter.min.js"></script>
+<!-- networking setup -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script src="js/socket.js"></script>
+<!-- game + multiplayer logic -->
 <script src="js/simulation.js"></script>
 <script src="js/player.js"></script>
 <script src="js/mob.js"></script>
 <script src="js/multiplayerSync.js"></script>
-<script src="js/socket.js"></script>
 <script src="js/multiplayerUI.js"></script>
 <script src="js/index.js"></script>
 </head>
@@ -383,6 +386,7 @@
 </body>
 
 </html>
+
 
 
 
