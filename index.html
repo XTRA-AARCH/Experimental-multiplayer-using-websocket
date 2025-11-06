@@ -17,11 +17,14 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
   <!-- Load simulation.js with defer so it runs after DOM is ready -->
+<script src="lib/matter.min.js"></script>
 <script src="js/simulation.js"></script>
 <script src="js/player.js"></script>
 <script src="js/mob.js"></script>
+<script src="js/multiplayerSync.js"></script>
+<script src="js/socket.js"></script>
+<script src="js/multiplayerUI.js"></script>
 <script src="js/index.js"></script>
-
 </head>
 
 
@@ -369,21 +372,18 @@
     <script src="js/lore.js"></script>
     <script src="js/engine.js"></script>
     <script src="js/index.js"></script>
-    <script type="module">
-  import "./socket.js";
-  import "./multiplayerUI.js";
-  import { sendPlayerUpdate, sendEnemyState } from "./multiplayerSync.js";
-
-  // Sync loop — runs every 100ms
+<script>
   setInterval(() => {
-    if (window.player) sendPlayerUpdate(window.player);
-    if (window.enemies) sendEnemyState(window.enemies);
+    if (window.player) window.sendPlayerUpdate(window.player);
+    if (window.enemies) window.sendEnemyState(window.enemies);
   }, 100);
 </script>
+
 
 </body>
 
 </html>
+
 
 
 
