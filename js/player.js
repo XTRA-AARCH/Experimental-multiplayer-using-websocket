@@ -7075,5 +7075,7 @@ m.move = () => {
     },
 
 };
+window.player = player;
+
 
 
