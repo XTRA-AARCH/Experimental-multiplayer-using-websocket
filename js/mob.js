@@ -1,47 +1,48 @@
-// === Multiplayer imports ===
-import { sendEnemyState, sendEnemyHit } from "./multiplayerSync.js";
+// mob.js
 
-//create array of mobs
+// create array of mobs
 let mob = [];
-//method to populate the array above
+
+// method to populate the array above
 const mobs = {
-loop() {
+  loop() {
     let i = mob.length;
     while (i--) {
-        if (mob[i].alive) {
-            mob[i].do();
-        } else {
-            mob[i].replace(i); //removing mob and replace with body, this is done here to avoid an array index bug with drawing I think
-        }
+      if (mob[i].alive) {
+        mob[i].do();
+      } else {
+        mob[i].replace(i); // removing mob and replace with body
+      }
     }
 
     // === Multiplayer: broadcast enemy positions ===
-    sendEnemyState(mob.map(m => ({
-        id: m.index,
-        x: m.position.x,
-        y: m.position.y,
-        vx: m.velocity.x,
-        vy: m.velocity.y
+    window.sendEnemyState(mob.map(m => ({
+      id: m.index,
+      x: m.position.x,
+      y: m.position.y,
+      vx: m.velocity.x,
+      vy: m.velocity.y
     })));
-},
+  },
 
-
-    draw() { },
-    drawDefault() {
-        ctx.lineWidth = 2;
-        let i = mob.length;
-        while (i--) {
-            ctx.beginPath();
-            const vertices = mob[i].vertices;
-            ctx.moveTo(vertices[0].x, vertices[0].y);
-            for (let j = 1, len = vertices.length; j < len; ++j) ctx.lineTo(vertices[j].x, vertices[j].y);
-            ctx.lineTo(vertices[0].x, vertices[0].y);
-            ctx.fillStyle = mob[i].fill;
-            ctx.strokeStyle = mob[i].stroke;
-            ctx.fill();
-            ctx.stroke();
-        }
-    },
+  draw() { },
+  drawDefault() {
+    ctx.lineWidth = 2;
+    let i = mob.length;
+    while (i--) {
+      ctx.beginPath();
+      const vertices = mob[i].vertices;
+      ctx.moveTo(vertices[0].x, vertices[0].y);
+      for (let j = 1, len = vertices.length; j < len; ++j) {
+        ctx.lineTo(vertices[j].x, vertices[j].y);
+      }
+      ctx.lineTo(vertices[0].x, vertices[0].y);
+      ctx.fillStyle = mob[i].fill;
+      ctx.strokeStyle = mob[i].stroke;
+      ctx.fill();
+      ctx.stroke();
+    }
+  },
     statusSlow(who, cycles = 60) {
         applySlow(who)
         //look for mobs near the target
@@ -312,6 +313,31 @@ loop() {
                     }
                 }
             },
+            // ✅ paste the new damage method right here
+damage(dmg, isBypassShield = false) {
+    if ((!this.isShielded || isBypassShield) && this.alive) {
+        let applied = dmg;
+
+        if (dmg !== Infinity) {
+            applied *= tech.damageAdjustments();
+            applied *= this.damageReduction;
+            if (tech.isFarAwayDmg) {
+                applied *= 1 + Math.sqrt(Math.max(500, Math.min(3000, this.distanceToPlayer())) - 500) * 0.0067;
+            }
+            applied /= Math.sqrt(this.mass);
+        }
+
+        this.health -= applied;
+
+        // === Multiplayer: broadcast enemy damage ===
+        if (window.sendEnemyHit && isFinite(applied) && applied > 0) {
+            window.sendEnemyHit(this.index, applied);
+        }
+
+        this.onDamage(applied);
+        if ((this.health < 0.01 || isNaN(this.health)) && this.alive) this.death();
+    }
+},
             status: [], // [ { effect(), endCycle } ]
             checkStatus() {
                 let j = this.status.length;
@@ -1477,3 +1503,4 @@ loop() {
     }
 
 };
+
