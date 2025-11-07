@@ -1,6 +1,3 @@
-// === Multiplayer imports ===
-import { sendBossTrigger } from "./multiplayerSync.js";
-
 // game Object ********************************************************
 //*********************************************************************
 const simulation = {
@@ -2603,3 +2600,4 @@ const simulation = {
 
 // expose globally so inline HTML can call it
 window.simulation = simulation;
+
