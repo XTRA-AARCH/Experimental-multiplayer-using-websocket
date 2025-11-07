@@ -7990,4 +7990,6 @@ const b = {
             },
         },
     ],
+
 };
+window.bullet = b;   // if bullet.js defines `b`
