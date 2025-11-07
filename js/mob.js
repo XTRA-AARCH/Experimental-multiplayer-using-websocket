@@ -1503,4 +1503,7 @@ damage(dmg, isBypassShield = false) {
     }
 
 };
+window.mobs = mobs;
+window.mob = mob;
+
 
