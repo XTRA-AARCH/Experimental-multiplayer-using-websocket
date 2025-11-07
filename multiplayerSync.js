@@ -4,57 +4,68 @@ let otherPlayers = {};
 let syncedEnemies = {};
 let syncedBoss = {};
 
+// --- SEND FUNCTIONS ---
+
 function sendPlayerUpdate(player) {
   IDKWHATIAMDOINGHERE.emit("playerUpdate", {
-    id: IDKWHATIAMDOINGHERE.id,
-    x: player.x,
-    y: player.y,
-    vx: player.vx,
-    vy: player.vy
+    id: player.id,
+    x: player.position.x,
+    y: player.position.y,
+    vx: player.velocity.x,
+    vy: player.velocity.y,
+    health: player.health   // players use health
   });
 }
-
-IDKWHATIAMDOINGHERE.on("playerUpdate", data => {
-  otherPlayers[data.id] = data;
-});
 
 function sendEnemyState(enemies) {
-  IDKWHATIAMDOINGHERE.emit("enemyState", {
-    enemies: enemies.map(e => ({
-      id: e.id,
-      x: e.x,
-      y: e.y,
-      vx: e.vx,
-      vy: e.vy
-    }))
-  });
+  const state = enemies.map(enemy => ({
+    id: enemy.id,
+    x: enemy.position.x,
+    y: enemy.position.y,
+    vx: enemy.velocity.x,
+    vy: enemy.velocity.y,
+    hp: enemy.hp            // mobs use hp
+  }));
+  IDKWHATIAMDOINGHERE.emit("enemyState", state);
 }
-
-IDKWHATIAMDOINGHERE.on("enemyState", data => {
-  data.enemies.forEach(e => {
-    syncedEnemies[e.id] = e;
-  });
-});
 
 function sendEnemyHit(enemyId, damage) {
   IDKWHATIAMDOINGHERE.emit("enemyHit", { enemyId, damage });
 }
 
+function sendBossTrigger(bossId, damage) {
+  IDKWHATIAMDOINGHERE.emit("bossTrigger", { bossId, damage });
+}
+
+// --- RECEIVE FUNCTIONS ---
+
+// remote player updates
+IDKWHATIAMDOINGHERE.on("playerUpdate", data => {
+  otherPlayers[data.id] = data;
+});
+
+// enemy state updates (data is an array, not {enemies: [...]})
+IDKWHATIAMDOINGHERE.on("enemyState", data => {
+  data.forEach(e => {
+    syncedEnemies[e.id] = e;
+  });
+});
+
+// enemy hit events
 IDKWHATIAMDOINGHERE.on("enemyHit", data => {
   if (syncedEnemies[data.enemyId]) {
     syncedEnemies[data.enemyId].hp -= data.damage;
   }
 });
 
-function sendBossTrigger(bossId, damage) {
-  IDKWHATIAMDOINGHERE.emit("bossTrigger", { bossId, damage });
-}
-
+// boss trigger events
 IDKWHATIAMDOINGHERE.on("bossTrigger", data => {
   if (syncedBoss[data.bossId]) {
     syncedBoss[data.bossId].hp -= data.damage;
   }
 });
+
+// --- GETTERS ---
 
 function getSyncedPlayers() { return otherPlayers; }
 function getSyncedEnemies() { return syncedEnemies; }
